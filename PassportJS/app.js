@@ -23,6 +23,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//start session before you use passport
+app.use(session({
+  secret: "ast u",
+  resave: false,
+  saveUninitialized: false
+}));
+
 
 //configure passport middleware
 app.use(passport.initialize());
@@ -33,12 +40,6 @@ passport.use(new LocalStrategy(db.User.authenticate()));
 passport.serializeUser(db.User.serializeUser());
 passport.deserializeUser(db.User.deserializeUser());
 
-//start session before you use passport
-app.use(session({
-  secret: "ast u",
-  resave: false,
-  saveUninitialized: false
-}));
 
 
 

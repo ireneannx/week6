@@ -3,6 +3,9 @@ var router = express.Router();
 const db = require('../models');
 const passport = require('passport')
 
+//for restricted path unless user has authenticated
+const loggedIn = require('../middleware/authmiddleware')
+
 //path -users/
 
 /* GET users listing. */
@@ -46,9 +49,13 @@ router.post('/register', (req, res, next) => {
 
 //login that user 
 router.post('/login', passport.authenticate("local",{
-  successRedirect : '/',
+  successRedirect : '/users/dashboard',
   failureRedirect: '/users/login'
 }),(req,res)=>{})
 
+//GET dashboard IF user is authenticated- using middleware func
+router.get('/dashboard',loggedIn, (req,res)=>{
+  res.render('dashboard');
+})
 
 module.exports = router;
